@@ -21,12 +21,11 @@
 Documentation for skytag is hosted by [Read the Docs](https://skytag.readthedocs.io/en/main/) ([development version](https://skytag.readthedocs.io/en/develop/) and [main version](https://skytag.readthedocs.io/en/main/)). The code lives on [github](https://github.com/thespacedoctor/skytag). Please report any issues you find [here](https://github.com/thespacedoctor/skytag/issues). If you want to contribute, [pull requests](https://github.com/thespacedoctor/skytag/pulls) are welcomed! 
 true
 
-
 ## Features
 
-* A command-line tool to report the credibility region a sky-location is found within on a HealPix skymap.
-* Providing a MJD will also return the time since the map event.
-* A python interface to provide the same functionality reported above, but can handle large lists of sky-locations or transient events.
+- A command-line tool to report the credibility region a sky-location is found within on a HealPix skymap.  
+- Providing a MJD will also return the time since the map event.  
+- A python interface to provide the same functionality reported above, but can handle large lists of sky-locations or transient events.  
 
 ## Installation
 
@@ -60,3 +59,30 @@ Usage:
     skytag <ra> <dec> <mapPath>
     skytag <ra> <dec> <mjd> <mapPath>
 ```
+
+If you need an example skymap, [download one from here](https://github.com/thespacedoctor/skytag/raw/main/skytag/commonutils/tests/input/bayestar.multiorder.fits).
+
+For example, to find the probability of the location RA=170.343532, Dec=-40.532255 then run:
+
+```bash 
+skytag 170.343532 -40.532255 bayestar.multiorder.fits
+```
+
+This returns:
+
+> This location is found in the 74.55 credibility region of the map.
+
+If you also supply an MJD:
+
+```bash 
+skytag 170.343532 -40.532255 60065.2232 bayestar.multiorder.fits
+```
+
+We get:
+
+> This transient is found in the 74.55 credibility region, and occurred 2.85564 days after the map event.
+
+## Python API
+
+To use skytag in your own Python code, [see here](_autosummary/skytag.commonutils.prob_at_location.html#skytag.commonutils.prob_at_location).
+

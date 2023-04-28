@@ -24,13 +24,6 @@
 
 
     
-    .. rubric:: Functions
-
-    .. autosummary::
-
-        
-          ~prob_at_location
-        
         
 
 

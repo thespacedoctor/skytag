@@ -4,14 +4,14 @@
 
 ```eval_rst
 .. toctree::
-   :maxdepth: 4
-   :caption: Table of Contents
+   :maxdepth: 1
+   :hidden:
 
-   todolist
+   Get Started <index>
    changes_link
 ```
 
-## API Reference
+
 
 ```eval_rst
 .. toctree::
@@ -28,14 +28,3 @@
 
    genindex
 ```
-
-
-```eval_rst
-.. include:: /autosummary_include.rst
-```
-
-```eval_rst
-.. include:: /genindex.rst
-```
-
-{{../../CHANGES.md}}

@@ -104,7 +104,7 @@ def main(arguments=None):
         else:
             preposition = "after"
 
-        print(f"This transient is found in the {prob[0]} credibility region, and occured {deltas[0]} days {preposition} the map event.")
+        print(f"This transient is found in the {prob[0]} credibility region, and occurred {deltas[0]} days {preposition} the map event.")
 
     else:
         # CALL FUNCTIONS/OBJECTS

@@ -19,4 +19,4 @@
 .. autosummary::
    :nosignatures:
 
-   skytag.commonutils.prob_at_location 
+    
