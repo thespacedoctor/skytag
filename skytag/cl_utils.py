@@ -5,23 +5,28 @@ Documentation for skytag can be found here: http://skytag.readthedocs.org
 
 Usage:
     skytag init
-    skytag [-s <pathToSettingsFile>]  
+    skytag <ra> <dec> <mapPath>
+    skytag <ra> <dec> <mjd> <mapPath>
 
 Options:
     init                                   setup the skytag settings file for the first time
+    <ra>                                   sky location right-ascension (decimal degrees or sexegesimal)
+    <dec>                                  sky location declination (decimal degrees or sexegesimal)
+    <mjd>                                  a transient event MJD. If supplied, a time delta from the map event is returned alongside probability.
+    <mapPath>                              path to a HealPix skymap
     -h, --help                             show this help message
     -v, --version                          show version
     -s, --settings <pathToSettingsFile>    the settings file
 """
+from subprocess import Popen, PIPE, STDOUT
+from fundamentals import tools, times
+from docopt import docopt
+import pickle
+import glob
+import readline
 import sys
 import os
 os.environ['TERM'] = 'vt100'
-import readline
-import glob
-import pickle
-from docopt import docopt
-from fundamentals import tools, times
-from subprocess import Popen, PIPE, STDOUT
 
 
 def tab_complete(text, state):
@@ -37,7 +42,7 @@ def main(arguments=None):
         arguments=arguments,
         docString=__doc__,
         logLevel="WARNING",
-        options_first=False,
+        options_first=True,
         projectName="skytag",
         defaultSettingsFile=True
     )
@@ -68,34 +73,6 @@ def main(arguments=None):
         '--- STARTING TO RUN THE cl_utils.py AT %s' %
         (startTime,))
 
-    # set options interactively if user requests
-    if "interactiveFlag" in a and a["interactiveFlag"]:
-
-        # load previous settings
-        moduleDirectory = os.path.dirname(__file__) + "/resources"
-        pathToPickleFile = "%(moduleDirectory)s/previousSettings.p" % locals()
-        try:
-            with open(pathToPickleFile):
-                pass
-            previousSettingsExist = True
-        except:
-            previousSettingsExist = False
-        previousSettings = {}
-        if previousSettingsExist:
-            previousSettings = pickle.load(open(pathToPickleFile, "rb"))
-
-        # x-raw-input
-        # x-boolean-raw-input
-        # x-raw-input-with-default-value-from-previous-settings
-
-        # save the most recently used requests
-        pickleMeObjects = []
-        pickleMe = {}
-        theseLocals = locals()
-        for k in pickleMeObjects:
-            pickleMe[k] = theseLocals[k]
-        pickle.dump(pickleMe, open(pathToPickleFile, "wb"))
-
     if a["init"]:
         from os.path import expanduser
         home = expanduser("~")
@@ -112,11 +89,35 @@ def main(arguments=None):
             pass
         return
 
-    # CALL FUNCTIONS/OBJECTS
+    if a["mjd"]:
+        from skytag.commonutils import prob_at_location
+        prob, deltas = prob_at_location(
+            log=log,
+            ra=float(a["ra"]),
+            dec=float(a["dec"]),
+            mjd=float(a["mjd"]),
+            mapPath=a["mapPath"]
+        )
 
-    if "dbConn" in locals() and dbConn:
-        dbConn.commit()
-        dbConn.close()
+        if deltas[0] < 0.:
+            preposition = "before"
+        else:
+            preposition = "after"
+
+        print(f"This transient is found in the {prob[0]} credibility region, and occured {deltas[0]} days {preposition} the map event.")
+
+    else:
+        # CALL FUNCTIONS/OBJECTS
+        from skytag.commonutils import prob_at_location
+        prob = prob_at_location(
+            log=log,
+            ra=float(a["ra"]),
+            dec=float(a["dec"]),
+            mapPath=a["mapPath"]
+        )[0]
+
+        print(f"This location is found in the {prob} credibility region of the map.")
+
     ## FINISH LOGGING ##
     endTime = times.get_now_sql_datetime()
     runningTime = times.calculate_time_difference(startTime, endTime)

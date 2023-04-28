@@ -24,16 +24,16 @@ true
 
 ## Features
 
-* 
-
-
+* A command-line tool to report the credibility region a sky-location is found within on a HealPix skymap.
+* Providing a MJD will also return the time since the map event.
+* A python interface to provide the same functionality reported above, but can handle large lists of sky-locations or transient events.
 
 ## Installation
 
 The easiest way to install skytag is to use `conda`:
 
 ``` bash
-conda create -n skytag python=3.9 pip skytag -c conda-forge
+conda create -n skytag python=3.11 pip skytag -c conda-forge
 conda activate skytag
 ```
 
@@ -49,26 +49,14 @@ It is also possible to install via pip if required:
 pip install skytag
 ```
 
-Or you can clone the [github repo](https://github.com/thespacedoctor/skytag) and install from a local version of the code:
-
-``` bash
-git clone git@github.com:thespacedoctor/skytag.git
-cd skytag
-python setup.py install
-```
-
 To check installation was successful run `skytag -v`. This should return the version number of the install.
 
-## Initialising skytag
+## Command-Line 
 
-Before using skytag you need to use the `init` command to generate a user settings file. Running the following creates a [yaml](https://learnxinyminutes.com/docs/yaml/) settings file in your home folder under `~/.config/skytag/skytag.yaml`:
+Here is the command-line usage:
 
-```bash
-skytag init
+```bash 
+Usage:
+    skytag <ra> <dec> <mapPath>
+    skytag <ra> <dec> <mjd> <mapPath>
 ```
-
-The file is initially populated with skytag's default settings which can be adjusted to your preference.
-
-If at any point the user settings file becomes corrupted or you just want to start afresh, simply trash the `skytag.yaml` file and rerun `skytag init`.
-
-You are now ready to start using skytag.

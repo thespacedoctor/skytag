@@ -7,18 +7,7 @@ Modules
    :nosignatures:
 
    skytag.commonutils 
-   skytag.docstring_test
    skytag.utKit 
-
-
-Classes
--------
-
-.. autosummary::
-   :toctree: _autosummary
-   :nosignatures:
-
-   skytag.utKit.utKit 
 
 
 Functions
@@ -28,4 +17,4 @@ Functions
    :toctree: _autosummary
    :nosignatures:
 
-   skytag.docstring_test.docsting_test 
+   skytag.commonutils.prob_at_location 

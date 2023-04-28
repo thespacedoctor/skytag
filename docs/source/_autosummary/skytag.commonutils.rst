@@ -1,37 +1,38 @@
-commonutils
-====================================================
+﻿commonutils *(module)*
+=============================
+
+
 
 .. automodule:: skytag.commonutils
-    :members:
-    :private-members:
-    :show-inheritance:
-    :inherited-members:
-    :member-order: bysource
+
 
     
     
-    .. rubric:: Subpackage Members
+
+    
+
+
+    
+
+    
+
+        
+
+
+
+    
+
+
+    
+    .. rubric:: Functions
 
     .. autosummary::
-    
+
+        
+          ~prob_at_location
         
         
-        
-        
-        
-        
-        
-        
-        
-    
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
+
     
     
