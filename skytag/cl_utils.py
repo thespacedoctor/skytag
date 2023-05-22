@@ -104,7 +104,7 @@ def main(arguments=None):
         else:
             preposition = "after"
 
-        print(f"This transient is found in the {prob[0]} credibility region, and occurred {deltas[0]} days {preposition} the map event.")
+        print(f"This transient is found in the {prob[0]}% credibility region, and occurred {deltas[0]} days {preposition} the map event.")
 
     else:
         # CALL FUNCTIONS/OBJECTS
@@ -116,7 +116,7 @@ def main(arguments=None):
             mapPath=a["mapPath"]
         )[0]
 
-        print(f"This location is found in the {prob} credibility region of the map.")
+        print(f"This location is found in the {prob}% credibility region of the map.")
 
     ## FINISH LOGGING ##
     endTime = times.get_now_sql_datetime()
