@@ -84,6 +84,14 @@ We get:
 
 > This transient is found in the 74.55 credibility region, and occurred 2.85564 days after the map event.
 
+Finally, we can request the localised event distance for this specific sky-position be returned:
+
+```bash 
+skytag -d 170.343532 -40.532255 bayestar.multiorder.fits
+```
+
+> This transient is found in the 74.55% credibility region. At this sky-position the map event is localised to a distance of 75.03 (±19.72) Mpc.
+
 ## Python API
 
 To use skytag in your own Python code, [see here](_autosummary/skytag.commonutils.prob_at_location.html#skytag.commonutils.prob_at_location).
