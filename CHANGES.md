@@ -1,7 +1,7 @@
 
 ## Release Notes
 
-**v0.3.0 - May 29, 2023**
+**v0.3.1 - May 30, 2023**
 
 - **FEATURE**: localisation distances are returned for each sky-position (if requested)
 - **ENHANCEMENT**: probability clearly reported as a % on the command-line
