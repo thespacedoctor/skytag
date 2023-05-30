@@ -6,8 +6,8 @@
     
     Usage:
         skytag init
-        skytag <ra> <dec> <mapPath>
-        skytag -d <ra> <dec> <mjd> <mapPath>
+        skytag [-d] <ra> <dec> <mapPath>
+        skytag [-d] <ra> <dec> <mjd> <mapPath>
     
     Options:
         init                                   setup the skytag settings file for the first time
