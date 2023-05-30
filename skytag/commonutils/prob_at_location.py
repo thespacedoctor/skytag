@@ -21,7 +21,8 @@ def prob_at_location(
         dec,
         mapPath,
         mjd=False,
-        log=False):
+        log=False,
+        distance=False):
     """*Return the probability contour a given sky-location resides within in a heaplix skymap*
 
     **Key Arguments:**
@@ -30,10 +31,12 @@ def prob_at_location(
         - ``mapPath`` -- path the the HealPix map
         - ``mjd`` -- MJD of transient event (e.g. discovery date). If supplied, a time-delta from the map event is returned (float or list)
         - ``log`` -- logger
+        - ``distance`` -- return also a distance (if present). Default False
 
     **Return:**
         - ``probs`` -- a list of probabilities the same length as the input RA and Dec lists. One probability per location.
         - ``timeDeltas`` -- a list of time-deltas (days) the same length as the input RA, Dec and MJD lists. One delta per input MJD giving the time since the map event. Only returned if MJD is supplied.
+        - ``distance`` -- a list of location specific distances and distance-sigmas. A list of tuples. Only returned if `distance=True`.
 
     You can pass a single coordinate to return the probability contour that location lies within on the skymap:
 
@@ -58,7 +61,7 @@ def prob_at_location(
     )
     ```
 
-    Finally, you can also pass in a list of MJDs to also return a list of time-deltas:
+    You can also pass in a list of MJDs to also return a list of time-deltas:
 
     ```
     from skytag.commonutils import prob_at_location
@@ -72,6 +75,23 @@ def prob_at_location(
     ```
 
     Here probs = `[100.0, 74.55]` and deltas = `[-28.11018, 0.88982]`. Deltas are in days, with negative deltas occurring before the map event.
+
+    Finally, you can also request distance estimates at the locations:
+
+    ```
+    from skytag.commonutils import prob_at_location
+    prob, deltas, distance = prob_at_location(
+        log=log,
+        ra=[10.343234, 170.343532],
+        dec=[14.345532, -40.532255],
+        mjd=[60034.257381, 60063.257381],
+        mapPath=pathToOutputDir + "/bayestar.multiorder.fits",
+        distance=True
+    )
+    ```
+
+    The distances are returned as a list of tuples (distance in MPC, distance sigma in MPC)
+
     """
 
     if not log:
@@ -128,7 +148,11 @@ def prob_at_location(
     # MERGE TABLES
     results = tableData.iloc[matchedIndices]
 
+    resultCount = 1
+    resultsToReturn = [np.around(results['CUMPROB'].values * 100., 2).tolist()]
+
     if mjd:
+        resultCount += 1
         if not isinstance(mjd, list) and not isinstance(mjd, np.ndarray):
             mjd = [mjd]
         mjd = np.array(mjd)
@@ -136,8 +160,24 @@ def prob_at_location(
         if ra.shape != mjd.shape:
             raise AttributeError("MJD list must be of equal length to RA and Dec lists")
         mjdDelta = mjd - mjdObs
-        log.debug('completed the ``prob_at_location`` function')
-        return np.around(results['CUMPROB'].values * 100., 2).tolist(), np.around(mjdDelta, 5).tolist()
+        resultsToReturn.append(np.around(mjdDelta, 5).tolist())
+
+    if distance:
+        resultCount += 1
+        if 'DISTMU' in results.columns:
+            dist = np.around(results['DISTMU'].values, 2).tolist()
+            distsigma = np.around(results['DISTSIGMA'].values, 2).tolist()
+            distTuples = []
+            distTuples[:] = [(d, s) for d, s in zip(dist, distsigma)]
+            resultsToReturn.append(distTuples)
+        else:
+            distTuples = []
+            distTuples[:] = [(None, None) for p in resultsToReturn[0]]
+
+            resultsToReturn.append(distTuples)
 
     log.debug('completed the ``prob_at_location`` function')
-    return np.around(results['CUMPROB'].values * 100., 2).tolist()
+    if resultCount == 1:
+        return resultsToReturn
+    else:
+        return resultsToReturn[0:resultCount]

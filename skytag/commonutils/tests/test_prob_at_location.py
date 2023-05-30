@@ -83,6 +83,42 @@ class test_prob_at_location(unittest.TestCase):
         )
         print(prob, deltas)
 
+    def test_bilby_map_function(self):
+
+        from skytag.commonutils import prob_at_location
+        prob, deltas = prob_at_location(
+            log=log,
+            ra=[10.343234, 170.343532],
+            dec=[14.345532, -40.532255],
+            mjd=[60034.257381, 60063.257381],
+            mapPath=pathToOutputDir + "/bilby.multiorder.fits"
+        )
+        print(prob, deltas)
+
+    def test_bayestar_map_distance_function(self):
+        from skytag.commonutils import prob_at_location
+        prob, deltas, distance = prob_at_location(
+            log=log,
+            ra=[10.343234, 170.343532],
+            dec=[14.345532, -40.532255],
+            mjd=[60034.257381, 60063.257381],
+            mapPath=pathToOutputDir + "/bayestar.multiorder.fits",
+            distance=True
+        )
+        print(prob, deltas, distance)
+
+    def test_bilby_map_distance_function(self):
+        from skytag.commonutils import prob_at_location
+        prob, deltas, distance = prob_at_location(
+            log=log,
+            ra=[10.343234, 170.343532],
+            dec=[14.345532, -40.532255],
+            mjd=[60034.257381, 60063.257381],
+            mapPath=pathToOutputDir + "/bilby.multiorder.fits",
+            distance=True
+        )
+        print(prob, deltas, distance)
+
     def test_mixed_len_function_exception(self):
 
         from skytag.commonutils import prob_at_location
