@@ -18,7 +18,7 @@
 [![](https://readthedocs.org/projects/skytag/badge/?version=main)](https://skytag.readthedocs.io/en/main/)
 [![](https://img.shields.io/github/issues/thespacedoctor/skytag/type:%20bug?label=bug%20issues)](https://github.com/thespacedoctor/skytag/issues?q=is%3Aissue+is%3Aopen+label%3A%22type%3A+bug%22+) 
 
-*Annotate transient sources or galaxies with the percentage credibility region they reside within on a given HealPix sky map.*.
+*Annotate transient sources or galaxies with the percentage credibility region they reside within on a given HealPix sky map.*
 
 Documentation for skytag is hosted by [Read the Docs](https://skytag.readthedocs.io/en/main/) ([development version](https://skytag.readthedocs.io/en/develop/) and [main version](https://skytag.readthedocs.io/en/main/)). The code lives on [github](https://github.com/thespacedoctor/skytag). Please report any issues you find [here](https://github.com/thespacedoctor/skytag/issues). If you want to contribute, [pull requests](https://github.com/thespacedoctor/skytag/pulls) are welcomed! 
 true
