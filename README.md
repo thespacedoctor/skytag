@@ -18,7 +18,7 @@
 [![](https://readthedocs.org/projects/skytag/badge/?version=main)](https://skytag.readthedocs.io/en/main/)
 [![](https://img.shields.io/github/issues/thespacedoctor/skytag/type:%20bug?label=bug%20issues)](https://github.com/thespacedoctor/skytag/issues?q=is%3Aissue+is%3Aopen+label%3A%22type%3A+bug%22+) 
 
-*Annotate transient sources or galaxies with the percentage credibility region they reside within on a given HealPix sky map.*.
+*Annotate transient sources or galaxies with the percentage credibility region they reside within on a given HealPix sky map.*
 
 Documentation for skytag is hosted by [Read the Docs](https://skytag.readthedocs.io/en/main/) ([development version](https://skytag.readthedocs.io/en/develop/) and [main version](https://skytag.readthedocs.io/en/main/)). The code lives on [github](https://github.com/thespacedoctor/skytag). Please report any issues you find [here](https://github.com/thespacedoctor/skytag/issues). If you want to contribute, [pull requests](https://github.com/thespacedoctor/skytag/pulls) are welcomed! 
 true
@@ -27,7 +27,8 @@ true
 
 - A command-line tool to report the credibility region a sky-location is found within on a HealPix skymap.  
 - Providing a MJD will also return the time since the map event.  
-- A python interface to provide the same functionality reported above, but can handle large lists of sky-locations or transient events.  
+- A python interface to provide the same functionality reported above, but can handle large lists of sky-locations or transient events.
+- works well in conjunction with [gocart](https://github.com/thespacedoctor/gocart).
 
 ## Installation
 
@@ -95,6 +96,10 @@ skytag -d 170.343532 -40.532255 bayestar.multiorder.fits
 ## Python API
 
 To use skytag in your own Python code, [see here](_autosummary/skytag.commonutils.prob_at_location.html#skytag.commonutils.prob_at_location).
+
+## gocart
+
+skyTag works very well in conjunction with [gocart](https://github.com/thespacedoctor/gocart), a tool to consume GCN Kafka alert streams and convert HealPix skymaps.
 
 ## How to cite skytag
 
