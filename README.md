@@ -27,7 +27,8 @@ true
 
 - A command-line tool to report the credibility region a sky-location is found within on a HealPix skymap.  
 - Providing a MJD will also return the time since the map event.  
-- A python interface to provide the same functionality reported above, but can handle large lists of sky-locations or transient events.  
+- A python interface to provide the same functionality reported above, but can handle large lists of sky-locations or transient events.
+- works well in conjunction with [gocart](https://github.com/thespacedoctor/gocart).
 
 ## Installation
 
@@ -95,6 +96,10 @@ skytag -d 170.343532 -40.532255 bayestar.multiorder.fits
 ## Python API
 
 To use skytag in your own Python code, [see here](_autosummary/skytag.commonutils.prob_at_location.html#skytag.commonutils.prob_at_location).
+
+## gocart
+
+skyTag works very well in conjunction with [gocart](https://github.com/thespacedoctor/gocart), a tool to consume GCN Kafka alert streams and convert HealPix skymaps.
 
 ## How to cite skytag
 
