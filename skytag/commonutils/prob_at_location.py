@@ -22,7 +22,8 @@ def prob_at_location(
         mapPath,
         mjd=False,
         log=False,
-        distance=False):
+        distance=False,
+        probdensity=False):
     """*Return the probability contour a given sky-location resides within in a heaplix skymap*
 
     **Key Arguments:**
@@ -32,11 +33,13 @@ def prob_at_location(
         - ``mjd`` -- MJD of transient event (e.g. discovery date). If supplied, a time-delta from the map event is returned (float or list)
         - ``log`` -- logger
         - ``distance`` -- return also a distance (if present). Default False
+        - ``probdensity`` -- return also the probability density. Default False
 
     **Return:**
         - ``probs`` -- a list of probabilities the same length as the input RA and Dec lists. One probability per location.
         - ``timeDeltas`` -- a list of time-deltas (days) the same length as the input RA, Dec and MJD lists. One delta per input MJD giving the time since the map event. Only returned if MJD is supplied.
         - ``distance`` -- a list of location specific distances and distance-sigmas. A list of tuples. Only returned if `distance=True`.
+        - ``probdensity`` -- a list of location specific probability densities. Only returned if `probdensity=True`.
 
     You can pass a single coordinate to return the probability contour that location lies within on the skymap:
 
@@ -76,7 +79,7 @@ def prob_at_location(
 
     Here probs = `[100.0, 74.55]` and deltas = `[-28.11018, 0.88982]`. Deltas are in days, with negative deltas occurring before the map event.
 
-    Finally, you can also request distance estimates at the locations:
+    You can also request distance estimates at the locations:
 
     ```
     from skytag.commonutils import prob_at_location
@@ -91,6 +94,21 @@ def prob_at_location(
     ```
 
     The distances are returned as a list of tuples (distance in MPC, distance sigma in MPC)
+
+    You can also request probability density (per steradian) at the locations,
+
+    ```
+    from skytag.commonutils import prob_at_location
+    prob, deltas, distance, probdensity = prob_at_location(
+        log=log,
+        ra=[10.343234, 170.343532],
+        dec=[14.345532, -40.532255],
+        mjd=[60034.257381, 60063.257381],
+        mapPath=pathToOutputDir + "/bayestar.multiorder.fits",
+        distance=True,
+        probdensity=True
+    )
+    ```
 
     """
 
@@ -175,6 +193,11 @@ def prob_at_location(
             distTuples[:] = [(None, None) for p in resultsToReturn[0]]
 
             resultsToReturn.append(distTuples)
+
+    if probdensity:
+        resultCount += 1
+        prob = np.around(results['PROBDENSITY'].values, 5).tolist()
+        resultsToReturn.append(prob)
 
     log.debug('completed the ``prob_at_location`` function')
     if resultCount == 1:
