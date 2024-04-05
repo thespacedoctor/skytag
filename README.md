@@ -106,7 +106,7 @@ skyTag works very well in conjunction with [gocart](https://github.com/thespaced
 If you use `skytag` in your work, please cite using the following BibTeX entry: 
 
 ```bibtex
-@software{Young_skytag_Annotate_transient,
+@software{Young_skytag,
     author = {Young, David R.},
     doi = {10.5281/zenodo.7977905},
     license = {GPL-3.0-only},
