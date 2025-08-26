@@ -124,8 +124,15 @@ def prob_at_location(
     from astropy import units as u
     import pandas as pd
 
+
+    
+
     # CONVERT HEALPIX MAP TO DATAFRAME
     skymap = Table.read(mapPath)
+    if "DISTMEAN" in skymap.meta:
+        rmax = skymap.meta["DISTMEAN"] + 7*skymap.meta["DISTSTD"]   
+    else:
+        rmax = 500
     mjdObs = skymap.meta["MJD-OBS"]
     skymap.sort('PROBDENSITY', reverse=True)
     tableData = skymap.to_pandas()
@@ -183,10 +190,12 @@ def prob_at_location(
     if distance:
         resultCount += 1
         if 'DISTMU' in results.columns:
-            dist = np.around(results['DISTMU'].values, 2).tolist()
-            distsigma = np.around(results['DISTSIGMA'].values, 2).tolist()
+            dist = results['DISTMU'].values
+            distsigma = results['DISTSIGMA'].values
+            distnorm = results['DISTNORM'].values
+            mean, std = ansatz_to_normal(distmu=dist, distsigma=distsigma, distnorm=distnorm, rmax=rmax, num=10000)
             distTuples = []
-            distTuples[:] = [(d, s) for d, s in zip(dist, distsigma)]
+            distTuples[:] = [(d, s) for d, s in zip(np.round(mean, 2), np.round(std, 2))]
             resultsToReturn.append(distTuples)
         else:
             distTuples = []
@@ -204,3 +213,55 @@ def prob_at_location(
         return resultsToReturn
     else:
         return resultsToReturn[0:resultCount]
+
+
+
+def ansatz_to_normal(distmu, distsigma, distnorm, rmin=0, rmax=500, num=1000):
+    """
+    Approximate an Ansatz (r^2-weighted Gaussian) distance distribution as a normal distribution.
+
+    Parameters
+    ----------
+    distmu : float or array-like
+        Mean of the underlying Gaussian (DISTMU).
+    distsigma : float or array-like
+        Stddev of the underlying Gaussian (DISTSIGMA).
+    distnorm : float or array-like
+        Normalization factor (DISTNORM).
+    rmin : float
+        Minimum distance (default: 0).
+    rmax : float
+        Maximum distance (default: 500).
+    num : int
+        Number of points in the distance grid.
+
+    Returns
+    -------
+    mean : float or np.ndarray
+        Mean of the Ansatz distribution.
+    std : float or np.ndarray
+        Stddev of the Ansatz distribution.
+    """
+    import numpy as np
+    from scipy.stats import norm
+
+    r = np.linspace(rmin, rmax, num)
+    distmu = np.atleast_1d(distmu)
+    distsigma = np.atleast_1d(distsigma)
+    distnorm = np.atleast_1d(distnorm)
+
+    means = []
+    stds = []
+
+    for mu, sigma, normfac in zip(distmu, distsigma, distnorm):
+        pdf = r**2 * normfac * norm.pdf(r, mu, sigma)
+        pdf /= np.trapezoid(pdf, r)
+        mean = np.trapezoid(r * pdf, r)
+        std = np.sqrt(np.trapezoid((r - mean)**2 * pdf, r))
+        means.append(mean)
+        stds.append(std)
+
+    means = np.array(means)
+    stds = np.array(stds)
+
+    return means, stds
