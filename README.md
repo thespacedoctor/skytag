@@ -1,6 +1,6 @@
 # skytag
 
-[![](https://zenodo.org/badge/633485720.svg)](https://zenodo.org/badge/latestdoi/633485720) 
+[![](https://zenodo.org/badge/DOI/10.5281/zenodo.7977905.svg)](https://zenodo.org/doi/10.5281/zenodo.7977905) 
 
 <!-- INFO BADGES -->  
 
@@ -107,11 +107,11 @@ If you use `skytag` in your work, please cite using the following BibTeX entry:
 
 ```bibtex
 @software{Young_skytag,
-author = {Young, David R.},
-doi = {10.5281/zenodo.7977906},
-license = {GPL-3.0-only},
-title = {{skytag}},
-url = {https://github.com/thespacedoctor/skytag}
+    author = {Young, David R.},
+    doi = {10.5281/zenodo.7977905},
+    license = {GPL-3.0-only},
+    title = {{skytag. Annotate transient sources or galaxies with the percentage credibility region they reside within on a given HealPix sky map.}},
+    url = {https://zenodo.org/doi/10.5281/zenodo.7977905}
 }
 ```
 
